@@ -82,7 +82,6 @@
   <ItemGroup>
     <None Include="Key.snk" />
     <EmbeddedResource Include="Quotes\DevOverlayQuotes.json" />
-    <None Include="README.md" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
