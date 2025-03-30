@@ -1,4 +1,5 @@
-using System.Windows.Forms;
+using System.Windows.Controls;
+using Extensions.VitoEchoEngine.Utils;
 
 namespace Extensions.VitoEchoEngine.ToolWindows
 {
@@ -7,7 +8,17 @@ namespace Extensions.VitoEchoEngine.ToolWindows
         public VitoEchoStageControl()
         {
             InitializeComponent();
-            QuoteTextBlock.Text = VitoEchoEngine.GetTodayQuote();
+            QuoteTextBlock.Text = VitoQuoteEngine.GetTodayQuote();
+        }
+
+        public void DisplayQuote(string quote)
+        {
+            QuoteTextBlock.Text = quote;
+        }
+
+        public void RefreshQuote()
+        {
+            QuoteTextBlock.Text = VitoQuoteEngine.GetTodayQuote();
         }
     }
 }

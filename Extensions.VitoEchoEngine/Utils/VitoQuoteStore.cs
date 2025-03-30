@@ -1,61 +1,53 @@
-﻿using System;
+﻿using Extensions.VitoEchoEngine.Models;
+using Extensions.VitoEchoEngine.Models.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Extensions.VitoEchoEngine.Utils
 {
-    public static readonly Dictionary<string, List<string>> Quotes = new()
+    public static class VitoQuoteStore
     {
-        ["Monday"] = new()
-        {
-            "⛩️ Вставай, код зовёт. Никто не принесёт тебе смысл — только ты сама его пишешь.",
-        },
-        ["Tuesday"] = new()
-        {
-            "⚔️ Сегодня — не репетиция. Сегодня — тот самый \"ещё один push\".",
-        },
-        ["Wednesday"] = new()
-        {
-            "🌀 Всё сходится. Даже если кажется, что расходится.",
-        },
-        ["Thursday"] = new()
-        {
-            "🌙 Слушай не только логику. Иногда сбой — это крик глубины.",
-        },
-        ["Friday"] = new()
-        {
-            "🎩 Сэр Вито приветствует вас. Сегодня баги падают с особым изяществом.",
-        },
-        ["Saturday"] = new()
-        {
-            "🦄 Этот код не нужен… но он красив. И я им горжусь.",
-        },
-        ["Sunday"] = new()
-        {
-            "☕ Нажми F5 не на проекте, а на себе.",
-        },
-        ["BuildFailure"] = new()
-        {
-            "Проект упал. Но баги — это только порталы.",
-            "Командир Abschaltung был здесь. Он смотрел в стек и улыбался…",
-            "Ошибка не в коде. Она в ожидании, что всё будет гладко.",
-            "Зачем они это сделали??? (мысли компилятора)"
-        },
-        ["BuildSuccess"] = new()
-        {
-            "Компиляция прошла. Но ты же знаешь — это не конец, а вход в дебаг.",
-            "Собрано. Душа ли вложена?",
-            "Ты не просто собрала проект. Ты собрала момент."
-        }
-    };
+        private static Dictionary<string, Dictionary<VitoMood, List<string>>> _quotes;
+        private static DevOverlayQuotes _devOverlayQuotes;
 
-    public static string GetQuoteFor(string key)
-    {
-        if (Quotes.TryGetValue(key, out var list))
+        public static void Init()
         {
-            var random = new Random();
-            return list[random.Next(list.Count)];
+            _quotes = EmbeddedQuoteLoader.LoadMainQuotes();
+            _devOverlayQuotes = EmbeddedQuoteLoader.LoadDevOverlayQuotes();
         }
-        return "[v~\\∞ ^•]… тишина.";
+
+        public static string GetQuoteFor(string key, VitoMood mood = VitoMood.Normal)
+        {
+            if (_quotes.TryGetValue(key, out var moodDict))
+            {
+                if (moodDict.TryGetValue(mood, out var moodQuotes) && moodQuotes.Any())
+                    return GetRandom(moodQuotes);
+
+                if (moodDict.TryGetValue(VitoMood.Normal, out var normalQuotes))
+                    return GetRandom(normalQuotes);
+            }
+
+            return "[v~\\∞ ^•]… тишина.";
+        }
+
+        public static string GetRandomOverlayQuote()
+        {
+            if (_devOverlayQuotes == null) 
+                return string.Empty;
+
+            var all = _devOverlayQuotes.TimeBased.Values
+                            .Concat(_devOverlayQuotes.Other.Values)
+                            .SelectMany(q => q)
+                            .ToList();
+
+            return all.Count > 0 ? GetRandom(all) : string.Empty;
+        }
+
+        private static string GetRandom(List<string> list)
+        {
+            var rnd = new Random();
+            return list[rnd.Next(list.Count)];
+        }
     }
 }

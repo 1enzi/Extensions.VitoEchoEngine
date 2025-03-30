@@ -1,17 +1,13 @@
-﻿using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.OLE.Interop;
+﻿using Extensions.VitoEchoEngine.Listeners;
+using Extensions.VitoEchoEngine.ToolWindows;
+using Extensions.VitoEchoEngine.Utils;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.Win32;
 using System;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 using Task = System.Threading.Tasks.Task;
+using Timer = System.Timers.Timer;
 
 namespace Extensions.VitoEchoEngine.Commands
 {
@@ -35,12 +31,14 @@ namespace Extensions.VitoEchoEngine.Commands
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(PackageGuidString)]
+    [ProvideToolWindow(typeof(VitoEchoStage), Width = 200, Height = 150)]
     public sealed class VitoEchoEngineCommandPackage : AsyncPackage
     {
         /// <summary>
         /// VitoEchoEngineCommandPackage GUID string.
         /// </summary>
         public const string PackageGuidString = "0962c31d-6a0c-4112-8fe8-6638124fb1dc";
+        private Timer _moodTimer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VitoEchoEngineCommandPackage"/> class.
@@ -64,10 +62,44 @@ namespace Extensions.VitoEchoEngine.Commands
         /// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            // When initialized asynchronously, the current thread may be a background thread at this point.
-            // Do any initialization that requires the UI thread after switching to the UI thread.
-            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
             await VitoEchoEngineCommand.InitializeAsync(this);
+            await VitoDevModeCommand.InitializeAsync(this);
+
+            if (await GetServiceAsync(typeof(SVsSolutionBuildManager)) is IVsSolutionBuildManager2 buildManager)
+            {
+                var listener = new VitoBuildListener(ShowBuildQuote);
+                buildManager.AdviseUpdateSolutionEvents(listener, out _);
+            }
+
+            _moodTimer = new Timer
+            {
+                Interval = TimeSpan.FromMinutes(5).TotalMilliseconds,
+                AutoReset = true,
+                Enabled = true
+            };
+            _moodTimer.Elapsed += (_, _) => VitoMoodMonitor.Tick();
+        }
+
+        private void ShowBuildQuote(string quote)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            if (quote.Contains("ошибк") || quote.Contains("Exception") || quote.Contains("провал"))
+                VitoMoodMonitor.NotifyBuildFailure();
+            else
+                VitoMoodMonitor.NotifyBuildSuccess();
+
+            ToolWindowPane window = FindToolWindow(typeof(VitoEchoStage), 0, true);
+            if (window?.Frame == null) 
+                return;
+
+            var control = (VitoEchoStage)window;
+            if (control.Content is VitoEchoStageControl vitoControl)
+            {
+                vitoControl.DisplayQuote(quote);
+            }
         }
 
         #endregion

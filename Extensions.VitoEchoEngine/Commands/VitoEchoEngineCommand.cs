@@ -1,4 +1,5 @@
 ﻿using Extensions.VitoEchoEngine.ToolWindows;
+using Extensions.VitoEchoEngine.Utils;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
@@ -10,7 +11,7 @@ namespace Extensions.VitoEchoEngine.Commands
     internal sealed class VitoEchoEngineCommand
     {
         public const int CommandId = 0x0100;
-        public static readonly Guid CommandSet = new Guid("e5de3bfa-88c2-45ef-804c-7f6db8e9a8a6");
+        public static readonly Guid CommandSet = new("e5de3bfa-88c2-45ef-804c-7f6db8e9a8a6");
         private readonly AsyncPackage _package;
 
         private VitoEchoEngineCommand(AsyncPackage package, OleMenuCommandService commandService)
@@ -32,12 +33,17 @@ namespace Extensions.VitoEchoEngine.Commands
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
+            VitoQuoteStore.Init();
+            VitoMoodMonitor.NotifyInteraction();
 
             ToolWindowPane window = _package.FindToolWindow(typeof(VitoEchoStage), 0, true);
             if ((null == window) || (null == window.Frame))
             {
                 throw new NotSupportedException("Cannot create tool window.");
             }
+
+            var control = ((VitoEchoStage)window).Content as VitoEchoStageControl;
+            control?.RefreshQuote();
 
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
