@@ -9,12 +9,10 @@ namespace Extensions.VitoEchoEngine.Utils
     public static class VitoQuoteStore
     {
         private static Dictionary<string, Dictionary<VitoMood, List<string>>> _quotes;
-        private static DevOverlayQuotes _devOverlayQuotes;
 
         public static void Init()
         {
             _quotes = EmbeddedQuoteLoader.LoadMainQuotes();
-            _devOverlayQuotes = EmbeddedQuoteLoader.LoadDevOverlayQuotes();
         }
 
         public static string GetQuoteFor(string key, VitoMood mood = VitoMood.Normal)
@@ -29,19 +27,6 @@ namespace Extensions.VitoEchoEngine.Utils
             }
 
             return "[v~\\∞ ^•]… тишина.";
-        }
-
-        public static string GetRandomOverlayQuote()
-        {
-            if (_devOverlayQuotes == null) 
-                return string.Empty;
-
-            var all = _devOverlayQuotes.TimeBased.Values
-                            .Concat(_devOverlayQuotes.Other.Values)
-                            .SelectMany(q => q)
-                            .ToList();
-
-            return all.Count > 0 ? GetRandom(all) : string.Empty;
         }
 
         private static string GetRandom(List<string> list)

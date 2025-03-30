@@ -7,21 +7,16 @@ namespace Extensions.VitoEchoEngine.Utils
 {
     public static class DevModeOverlay
     {
-        private static readonly Dictionary<string, List<string>> _moodQuotes = new();
-        private static readonly Dictionary<string, List<string>> _timeQuotes = new();
+        private static DevOverlayQuotes _devQuotes = new();
 
-        public static void Load(DevOverlayQuotes quotes)
+        public static void Init()
         {
-            foreach (var kvp in quotes.TimeBased)
-                _timeQuotes[kvp.Key] = kvp.Value;
-
-            foreach (var kvp in quotes.Other)
-                _moodQuotes[kvp.Key] = kvp.Value;
+            _devQuotes = EmbeddedQuoteLoader.LoadDevOverlayQuotes();
         }
 
         public static string GetEcho(VitoMood mood)
         {
-            var list = _moodQuotes.TryGetValue(mood.ToString(), out var moodList) ? moodList : null;
+            var list = _devQuotes.MoodQuotes.TryGetValue(mood.ToString(), out var moodList) ? moodList : null;
             var echo = GetRandom(moodList);
 
             var timeEcho = GetTimeBased();
@@ -39,7 +34,7 @@ namespace Extensions.VitoEchoEngine.Utils
                 _ => null
             };
 
-            return key != null && _timeQuotes.TryGetValue(key, out var list)
+            return key != null && _devQuotes.TimeBased.TryGetValue(key, out var list)
                 ? GetRandom(list)
                 : null;
         }

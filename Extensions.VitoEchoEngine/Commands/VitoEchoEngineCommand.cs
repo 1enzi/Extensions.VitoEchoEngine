@@ -33,9 +33,8 @@ namespace Extensions.VitoEchoEngine.Commands
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            VitoQuoteStore.Init();
-            VitoMoodMonitor.NotifyInteraction();
-
+            InitComponents();
+            
             ToolWindowPane window = _package.FindToolWindow(typeof(VitoEchoStage), 0, true);
             if ((null == window) || (null == window.Frame))
             {
@@ -47,6 +46,13 @@ namespace Extensions.VitoEchoEngine.Commands
 
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+        }
+
+        private void InitComponents()
+        {
+            VitoQuoteStore.Init();
+            DevModeOverlay.Init();
+            VitoMoodMonitor.NotifyInteraction();
         }
     }
 }

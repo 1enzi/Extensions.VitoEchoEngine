@@ -3,15 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vsui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0">
     <Grid>
-        <TextBlock x:Name="QuoteTextBlock"
-           Width="150"
-           Height="62"
-           Text="Здесь будет мудрость Вито..."
-           TextWrapping="Wrap"
-           FontSize="10"
-           VerticalAlignment="Center"
-           HorizontalAlignment="Center"
-           TextAlignment="Center"
-           Foreground="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      Padding="10">
+            <TextBlock x:Name="QuoteTextBlock"
+                       Text="Здесь будет мудрость Вито..."
+                       TextWrapping="Wrap"
+                       FontSize="10"
+                       TextAlignment="Center"
+                       Foreground="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"
+                       HorizontalAlignment="Center" />
+        </ScrollViewer>
     </Grid>
 </UserControl>

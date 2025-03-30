@@ -23,7 +23,7 @@ namespace Extensions.VitoEchoEngine.Utils
                 return quote;
 
             var devEcho = DevModeOverlay.GetEcho(VitoMoodMonitor.CurrentMood);
-            return $"{quote}\n\n// {devEcho}";
+            return $"{quote}\n{devEcho}";
         }
     }
 }
