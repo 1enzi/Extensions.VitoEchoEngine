@@ -55,8 +55,6 @@
       <Button guid="guidVitoEchoEngineCommandPackageCmdSet" id="VitoEchoEngineCommandId" priority="0x0100" type="Button">
         <Parent guid="guidVitoEchoEngineCommandPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPicQuote" />
-	    <CommandFlag>DynamicVisibility</CommandFlag>
-	    <CommandFlag>AllowParams</CommandFlag>
         <Strings>
           <ButtonText>Resonate</ButtonText>
         </Strings>
@@ -64,9 +62,6 @@
 	  <Button guid="guidVitoEchoEngineCommandPackageCmdSet" id="cmdidVitoDevMode" priority="0x0100" type="Button">
 		  <Parent guid="guidVitoEchoEngineCommandPackageCmdSet" id="MyMenuGroup" />
    		  <Icon guid="guidImages1" id="bmpPicDevMode" />
-		  <CommandFlag>DefaultInvisible</CommandFlag>
-		  <CommandFlag>DynamicVisibility</CommandFlag>
-		  <CommandFlag>AllowParams</CommandFlag>
 		     <Strings>
 		    	<ButtonText>Toggle DevMode</ButtonText>
 			 </Strings>

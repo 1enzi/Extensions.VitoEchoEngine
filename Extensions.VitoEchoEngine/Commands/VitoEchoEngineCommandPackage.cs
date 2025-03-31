@@ -92,7 +92,7 @@ namespace Extensions.VitoEchoEngine.Commands
             else
                 VitoMoodMonitor.NotifyBuildSuccess();
 
-            ToolWindowPane window = FindToolWindow(typeof(VitoEchoStage), 1, true);
+            ToolWindowPane window = FindToolWindow(typeof(VitoEchoStage), 0, false);
             if (window?.Frame == null) 
                 return;
 
