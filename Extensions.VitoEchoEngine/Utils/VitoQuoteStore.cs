@@ -1,5 +1,4 @@
-﻿using Extensions.VitoEchoEngine.Models;
-using Extensions.VitoEchoEngine.Models.Enum;
+﻿using Extensions.VitoEchoEngine.Models.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,7 @@ namespace Extensions.VitoEchoEngine.Utils
 {
     public static class VitoQuoteStore
     {
-        private static Dictionary<string, Dictionary<VitoMood, List<string>>> _quotes;
+        private static Dictionary<string, Dictionary<VitoMood, List<string>>> _quotes = new();
 
         public static void Init()
         {

@@ -85,7 +85,7 @@
     <GuidSymbol name="guidVitoEchoEngineCommandPackage" value="{0962c31d-6a0c-4112-8fe8-6638124fb1dc}" />
 
 	  <!-- This is the guid used to group the menu commands together -->
-    <GuidSymbol name="guidVitoEchoEngineCommandPackageCmdSet" value="{e5de3bfa-88c2-45ef-804c-7f6db8e9a8a6}">
+    <GuidSymbol name="guidVitoEchoEngineCommandPackageCmdSet" value="{2AB3039C-BE70-4A52-8B49-F5170B25E2D8}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="VitoEchoEngineCommandId" value="0x0100" />
 	  <IDSymbol name="cmdidVitoDevMode" value="0x0101" />

@@ -10,7 +10,7 @@ namespace Extensions.VitoEchoEngine.Commands
 {
     internal sealed class VitoDevModeCommand
     {
-        public static readonly Guid CommandSet = new Guid("e5de3bfa-88c2-45ef-804c-7f6db8e9a8a6");
+        public static readonly Guid CommandSet = new Guid("2AB3039C-BE70-4A52-8B49-F5170B25E2D8");
         public const int CommandId = 0x0101;
 
         private readonly AsyncPackage _package;
