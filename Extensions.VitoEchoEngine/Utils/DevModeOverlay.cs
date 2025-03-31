@@ -8,11 +8,15 @@ namespace Extensions.VitoEchoEngine.Utils
     public static class DevModeOverlay
     {
         private static DevOverlayQuotes _devQuotes = new();
+        private static bool _isEnable = false;
 
         public static void Init()
         {
             _devQuotes = EmbeddedQuoteLoader.LoadDevOverlayQuotes();
         }
+
+        public static void ToggleIsEnable() => _isEnable = !_isEnable;
+        public static bool IsEnable() => _isEnable;
 
         public static string GetEcho(VitoMood mood)
         {
@@ -20,7 +24,7 @@ namespace Extensions.VitoEchoEngine.Utils
             var echo = GetRandom(moodList);
 
             var timeEcho = GetTimeBased();
-            return timeEcho != null ? $"{echo}\n// {timeEcho}" : echo;
+            return timeEcho != null ? $"{echo}\n// {timeEcho}" : $"\n\n//{echo}";
         }
 
         private static string GetTimeBased()

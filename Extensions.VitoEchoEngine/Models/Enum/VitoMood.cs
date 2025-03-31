@@ -8,6 +8,5 @@
         IronicRage,
         Inspired,
         Lost,
-        DevMode
     }
 }

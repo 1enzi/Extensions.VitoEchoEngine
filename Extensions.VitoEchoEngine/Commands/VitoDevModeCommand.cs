@@ -1,5 +1,4 @@
-﻿using Extensions.VitoEchoEngine.Models.Enum;
-using Extensions.VitoEchoEngine.Utils;
+﻿using Extensions.VitoEchoEngine.Utils;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
@@ -34,11 +33,9 @@ namespace Extensions.VitoEchoEngine.Commands
 
         private void Execute(object sender, EventArgs e)
         {
-            var isDevMode = VitoMoodMonitor.CurrentMood == VitoMood.DevMode;
-
-            if (isDevMode)
+            if (DevModeOverlay.IsEnable())
             {
-                VitoMoodMonitor.ResetMood();
+                DevModeOverlay.ToggleIsEnable();
                 VsShellUtilities.ShowMessageBox(
                     _package,
                     "DevMode отключён. Баги снова нелегальны. Но мы оба знаем — это временно.",
@@ -49,7 +46,7 @@ namespace Extensions.VitoEchoEngine.Commands
             }
             else
             {
-                VitoMoodMonitor.SetMood(VitoMood.DevMode);
+                DevModeOverlay.ToggleIsEnable();
                 VsShellUtilities.ShowMessageBox(
                     _package,
                     "DevMode включён. Все баги теперь официально легальны.",

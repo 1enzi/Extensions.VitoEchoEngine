@@ -19,7 +19,7 @@ namespace Extensions.VitoEchoEngine.Utils
 
         private static string WithDevLayer(string quote)
         {
-            if (VitoMoodMonitor.CurrentMood != VitoMood.DevMode)
+            if (!DevModeOverlay.IsEnable())
                 return quote;
 
             var devEcho = DevModeOverlay.GetEcho(VitoMoodMonitor.CurrentMood);
