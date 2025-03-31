@@ -24,7 +24,7 @@ namespace Extensions.VitoEchoEngine.Utils
             var echo = GetRandom(moodList);
 
             var timeEcho = GetTimeBased();
-            return timeEcho != null ? $"{echo}\n// {timeEcho}" : $"\n\n//{echo}";
+            return timeEcho != null ? $"\n\n//{echo}\n// {timeEcho}" : $"\n\n//{echo}";
         }
 
         private static string GetTimeBased()
