@@ -81,18 +81,6 @@ namespace Extensions.VitoEchoEngine.Commands
                 Enabled = true
             };
             _moodTimer.Elapsed += (_, _) => VitoMoodMonitor.Tick();
-
-            await ShowVitoToolWindowAsync();
-        }
-
-        private async Task ShowVitoToolWindowAsync()
-        {
-            await Task.Run(async () =>
-            {
-                await Task.Delay(3000);
-                await JoinableTaskFactory.SwitchToMainThreadAsync();
-                await ShowToolWindowAsync(typeof(VitoEchoStage), 2, true, DisposalToken);
-            });
         }
 
         private void ShowBuildQuote(string quote)
