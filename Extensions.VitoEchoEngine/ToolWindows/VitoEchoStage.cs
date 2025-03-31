@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Extensions.VitoEchoEngine.ToolWindows
 {
-    [Guid("a1f7c438-5c45-4bde-8f11-02d1dcbf5617")]
+    [Guid("4E73E9D3-F816-4055-B44A-5853A4DB68D8")]
     public class VitoEchoStage : ToolWindowPane
     {
         public VitoEchoStage() : base(null)

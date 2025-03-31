@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using Task = System.Threading.Tasks.Task;
 using Timer = System.Timers.Timer;
 
@@ -29,7 +30,7 @@ namespace Extensions.VitoEchoEngine.Commands
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [ProvideMenuResource("Menus.ctmenu", 1)]
+    [ProvideMenuResource("VitoMenus.ctmenu", 1)]
     [Guid(PackageGuidString)]
     [ProvideToolWindow(typeof(VitoEchoStage), Width = 200, Height = 150)]
     public sealed class VitoEchoEngineCommandPackage : AsyncPackage
@@ -80,6 +81,18 @@ namespace Extensions.VitoEchoEngine.Commands
                 Enabled = true
             };
             _moodTimer.Elapsed += (_, _) => VitoMoodMonitor.Tick();
+
+            await ShowVitoToolWindowAsync();
+        }
+
+        private async Task ShowVitoToolWindowAsync()
+        {
+            await Task.Run(async () =>
+            {
+                await Task.Delay(3000);
+                await JoinableTaskFactory.SwitchToMainThreadAsync();
+                await ShowToolWindowAsync(typeof(VitoEchoStage), 2, true, DisposalToken);
+            });
         }
 
         private void ShowBuildQuote(string quote)

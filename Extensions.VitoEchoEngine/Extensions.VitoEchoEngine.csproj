@@ -110,7 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <VSCTCompile Include="Commands\VitoEchoEngineCommandPackage.vsct">
-      <ResourceName>Menus.ctmenu</ResourceName>
+      <ResourceName>VitoMenus.ctmenu</ResourceName>
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
